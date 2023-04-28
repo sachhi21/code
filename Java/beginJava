@@ -26,4 +26,13 @@ public class LibrarySystem {
     
    //Main method
    
+   public static void main(String[] args) {
+        LibrarySystem librarySystem = new LibrarySystem();
+   Book book = new Book(titleName, authorName);
+                    librarySystem.addBook(book);
+                    
+                    
+    Book bookToRemove = new Book(removeTitle, removeAuthor);
+                    librarySystem.removeBook(bookToRemove);
    
+   }
