@@ -1,3 +1,12 @@
+mini console java application 
+
+Bus Booking System 
+  ->Source
+  ->Destination
+  ->Available buses
+  ->book available bus 
+  ->Print ticket
+
 inheritance
 
 abstraction
