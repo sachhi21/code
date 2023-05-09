@@ -1,4 +1,4 @@
-Queries--------------------
+Queries--------------------Updated
 
 select * from clients;
 
@@ -94,5 +94,69 @@ select * from  offices;
 select distinct first_name, last_name from employees;
 
 
-DAtabase------------------------------------------
+08-05-2023------------------------------------------
+
+    insert into Customers(first_name, last_name, birth_date,
+    address,city,state) 
+    values( 'him' , 'blr' , '1999-01-01',
+     '615-641-4759' , 
+    '50 Lillian Crossing', 'IN');
+    
+    update Customers
+    set city = 'chennai'
+    where customer_id = 11;
+    
+    select * from orders where customer_id IN 
+    (select customer_id from customers where customer_id =5);
+    
+    delete from customers
+    where customer_id = 11;
+    
+    select * from customers;  
+    
+    -- joins
+
+ select  order_id , o.customer_id  
+ from orders o
+ join customers c
+              on o.customer_id =c.customer_id;
+              
+              
+              
+-- joing tw0 databases
+
+ select * from order_items oi
+     join sql_inventory.products p
+     on oi.product_id = p.product_id;
+    use sql_hr;
+    
+    
+      select 
+       e.employee_id,
+       e.first_name,
+	   m.first_name AS manager
+       from employees e
+       join employees m
+       on e.reports_to = m.employee_id;
+    select * from employees;
+    
+    use sql_store;
+        
+    select order_id ,
+    order_date,
+    'Active' As status
+    from orders
+    where order_date >= '2019-01-01'
+    union
+    
+        select order_id ,
+    order_date,
+    'Archived' As status
+    from orders
+    where order_date < '2019-01-01';
+    
+    
+   alter
+    
+
 
