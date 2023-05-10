@@ -1,3 +1,155 @@
+package org.example;
+
+/**
+ * Hello world!
+ *
+ */
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.Scanner;
+
+public class App {
+    public static void main(String[] args) {
+
+
+
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/food_delivery","root", "0000");
+
+
+            System.out.println("Connected to the database!");
+
+            Statement statement = connection.createStatement();
+             //Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+
+
+
+
+          */  ResultSet resultSet = statement.executeQuery("select * from customers");
+            while(resultSet.next()) {
+               // System.out.println();
+                System.out.println(resultSet.getInt(1) + " "+ resultSet.getString(2) + " "+ resultSet.getString(8));
+            }  */
+
+           
+
+            ResultSet resultSet = statement.executeQuery("select * from customer");
+            while(resultSet.next()) {
+                // System.out.println();
+                System.out.println(resultSet.getInt(1) + " "+ resultSet.getString(2) + " "+ resultSet.getString(3) + " " + resultSet.getString(4) );
+            }
+
+
+
+            String sql = "SELECT * FROM orders  join restaurants  on orders.customer_id = restaurants.id where orders.customer_id=?" ;
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Enter a restaurant ID:");
+                int id = Integer.parseInt(sc.nextLine());
+                statement.setInt(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int orderId = resultSet.getInt("order_id");
+                        int restaurantId = resultSet.getInt("restaurant_id");
+                        Date orderDate = resultSet.getDate("order_date");
+
+                        System.out.println(resultSet.getInt(1) + " "+ resultSet.getInt(2)+"  " + resultSet.getInt(3)+ " " + resultSet.getDate(4) + " " + resultSet.getInt(5) +
+                                " " + resultSet.getString(6)+resultSet.getString(7));
+                    }
+                }
+            }
+
+            String sq1 = "SELECT * FROM Menu WHERE restaurant_id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sq1)) {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Enter a restaurant ID:");
+                int id = Integer.parseInt(sc.nextLine());
+                statement.setInt(1,id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int itemId = resultSet.getInt("menu_id");
+                        String itemName = resultSet.getString("item_name");
+                        double itemPrice = resultSet.getDouble("item_price");
+                    System.out.println(resultSet.getInt(1) + " " + resultSet.getString(3)+ " " + resultSet.getDouble(4));
+                    }
+                }
+            }
+
+            String sql2 = "INSERT INTO Orders (customer_id, restaurant_id, order_date) VALUES (?, ?, ?)"
+            ;
+
+            try (PreparedStatement statement = connection.prepareStatement(sql2))
+                 {
+
+                Scanner sc = new Scanner(System.in);
+                     System.out.println("Enter a Customer ID:");
+
+                int customerId = Integer.parseInt(sc.nextLine());
+                     System.out.println("Enter a restaurant ID:");
+
+                     int restaurantId = Integer.parseInt(sc.nextLine());
+
+                statement.setInt(1, customerId);
+                statement.setInt(2, restaurantId);
+                statement.setDate(3, Date.valueOf(LocalDate.now()));
+                int rowsAffected = statement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("order placed successfully");
+                } else {
+                    System.out.println("order not placed");
+                }
+            }
+
+            String sql3 = "SELECT * FROM orders  join restaurants  on orders.customer_id = restaurants.id where orders.customer_id=?" ;
+            try (PreparedStatement statement = connection.prepareStatement(sql3)) {
+                Scanner sc = new Scanner(System.in);
+
+                System.out.println("Enter a restaurant ID:");
+                int id = Integer.parseInt(sc.nextLine());
+                statement.setInt(1, id);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int orderId = resultSet.getInt("order_id");
+                        int restaurantId = resultSet.getInt("restaurant_id");
+                        Date orderDate = resultSet.getDate("order_date");
+
+                        System.out.println(resultSet.getInt(1) + " "+ resultSet.getInt(2)+"  " + resultSet.getInt(3)+ " " + resultSet.getDate(4) + " " + resultSet.getInt(5) +
+                                " " + resultSet.getString(6)+resultSet.getString(7));
+                    }
+                }
+            }
+
+
+
+            //resultSet.close();
+            //statement.close();
+            connection.close();
+
+            System.out.println("Connection closed.");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 create database food_delivery;
 
 use food_delivery;
